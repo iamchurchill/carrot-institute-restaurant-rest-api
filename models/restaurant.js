@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.hasMany(models.Rating, {
+        foreignKey: "restaurant_id",
+        as: "ratings",
+      });
     }
   }
   Restaurant.init(
@@ -21,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       user_id: {
-        //Restaurant admin ID -> User table ID
         type: DataTypes.UUID,
         references: {
           model: "Address",
@@ -31,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "SET NULL",
       },
       address_id: {
-        //Restaurant address ID -> Address table ID
         type: DataTypes.UUID,
         references: {
           model: "Address",

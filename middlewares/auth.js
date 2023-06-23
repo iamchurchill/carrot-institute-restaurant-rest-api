@@ -1,4 +1,3 @@
-const axios = require("axios");
 const JWT = require("@classes/jwt");
 const Response = require("@classes/response");
 const { Sequelize, Token } = require("@models");

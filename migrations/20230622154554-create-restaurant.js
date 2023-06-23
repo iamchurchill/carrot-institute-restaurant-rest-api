@@ -17,7 +17,6 @@ module.exports = {
         },
       },
       user_id: {
-        //restaurant admin ID -> User table ID
         type: Sequelize.UUID,
         references: {
           model: "Address",
@@ -27,7 +26,6 @@ module.exports = {
         onDelete: "SET NULL",
       },
       address_id: {
-        //restaurant address ID -> Address table ID
         type: Sequelize.UUID,
         references: {
           model: "Address",

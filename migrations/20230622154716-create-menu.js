@@ -10,7 +10,6 @@ module.exports = {
         allowNull: false,
       },
       restaurant_id: {
-        //Restaurant ID -> User table ID
         type: Sequelize.UUID,
         references: {
           model: "Address",

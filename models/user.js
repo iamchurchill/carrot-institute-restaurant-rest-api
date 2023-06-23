@@ -8,7 +8,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.hasMany(models.Address, {
+        foreignKey: "user_id",
+        as: "addresses",
+      });
+      this.hasMany(models.Token, {
+        foreignKey: "user_id",
+        as: "tokens",
+      });
+      this.hasMany(models.PaymentMethod, {
+        foreignKey: "user_id",
+        as: "payment_method",
+      });
     }
   }
   User.init(
@@ -48,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_type: {
         type: DataTypes.ENUM("customer", "delivery_person", "admin"),
+        defaultValue: "customer",
       },
       registration_date: {
         type: DataTypes.DATE,

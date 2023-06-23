@@ -44,6 +44,7 @@ module.exports = {
       },
       user_type: {
         type: Sequelize.ENUM("customer", "delivery_person", "admin"),
+        defaultValue: "customer",
       },
       registration_date: {
         type: Sequelize.DATE,

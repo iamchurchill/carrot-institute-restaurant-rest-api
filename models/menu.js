@@ -8,16 +8,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.Restaurant, {
+        foreignKey: "restaurant_id",
+        as: "restaurant",
+      });
     }
   }
   Menu.init(
     {
       restaurant_id: {
-        //Restaurant ID -> User table ID
         type: DataTypes.UUID,
         references: {
-          model: "Address",
+          model: "Restaurant",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -37,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       available: {
         type: DataTypes.BOOLEAN,
+        defaultValue: true,
       },
     },
     {
