@@ -41,11 +41,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("on the way", "nearby", "delivered"),
         defaultValue: "on the way",
       },
-      latitude: {
-        type: DataTypes.DECIMAL,
-      },
-      longitude: {
-        type: DataTypes.DECIMAL,
+      geo_point: {
+        type: DataTypes.GEOMETRY("POINT"),
       },
     },
     {
