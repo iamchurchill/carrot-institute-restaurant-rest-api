@@ -2,6 +2,8 @@
 const { sequelize } = require("../models");
 const { faker } = require("@faker-js/faker");
 
+const bcrypt = require("bcrypt");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -13,7 +15,7 @@ module.exports = {
         first_name: faker.internet.userName(),
         last_name: faker.internet.userName(),
         email: faker.internet.email(),
-        password: null,
+        password: bcrypt.hashSync("admin", 10),
         msisdn: faker.phone.number("23354#######"),
         registration_date: new Date(),
         last_login: new Date(),
