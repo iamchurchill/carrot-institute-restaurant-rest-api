@@ -1,0 +1,56 @@
+"use strict";
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("Ratings", {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal("uuid_generate_v4()"),
+        primaryKey: true,
+        allowNull: false,
+      },
+      user_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: "User",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      restaurant_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: "Restaurant",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      rating_value: {
+        type: Sequelize.INTEGER,
+      },
+      review: {
+        type: Sequelize.STRING,
+      },
+      review_date: {
+        type: Sequelize.DATE,
+      },
+      created_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+        field: "deleted_at",
+      },
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("Ratings");
+  },
+};
