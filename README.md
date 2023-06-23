@@ -19,13 +19,13 @@ Follow these steps to get this project running on your local machine:
 1. **Clone the Repository:** Clone the project repository by running:
 
    ```bash
-   git clone {{repo url}}
+   git clone git@github.com:iamchurchill/carrot-institute-restaurant-rest-api.git
    ```
 
 2. **Navigate into the Project Directory:** Switch into the newly created project directory:
 
    ```bash
-   cd {{directory name}}
+   cd .
    ```
 
 3. Create a .env file by copying and renaming .env.example. Fill in the required fields:
