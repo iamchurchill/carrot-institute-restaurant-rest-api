@@ -1,5 +1,5 @@
 const Response = require("@classes/response");
-const { Order, OrderDetails } = require("@models");
+const { sequelize, Order, OrderDetail } = require("@models");
 const { PER_PAGE } = process.env;
 
 /**
@@ -19,27 +19,43 @@ const { PER_PAGE } = process.env;
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
- *                 description: Name of order
  *               user_id:
  *                 type: string
+ *                 description: User ID for order
+ *               restaurant_id:
+ *                 type: string
  *                 format: uuid
- *                 description: User ID of order
+ *                 description: Restaurant ID for order
  *               address_id:
  *                 type: string
  *                 format: uuid
- *                 description: Address ID of order
- *               msisdn:
- *                 type: string
- *                 description: MSISDN of order
- *               email:
- *                 type: string
- *                 description: Email of order
+ *                 description: Address ID for user making the order
+ *               total_amount:
+ *                 type: float
+ *                 example: 39.98
+ *                 description: Total cost of order
+ *               order_details:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     menu_id:
+ *                       type: string
+ *                       format: uuid
+ *                     quantity:
+ *                       type: integer
+ *                       format: int32
+ *                       example: 2
+ *                     price:
+ *                       type: number
+ *                       format: float
+ *                       example: 19.99
  *             required:
  *               - name
- *               - msisdn
- *               - email
+ *               - restaurant_id
+ *               - address_id
+ *               - total_amount
+ *               - order_details
  *     responses:
  *       201:
  *         description: Created
@@ -99,32 +115,53 @@ const { PER_PAGE } = process.env;
  *               status: false
  *               message: Internal Server Error
  */
-module.exports.store = (request, response, next) => {
-  let { name, user_id, address_id = null, msisdn, email } = request.body;
+module.exports.store = async (request, response, next) => {
+  let {
+    user_id,
+    restaurant_id,
+    address_id,
+    total_amount,
+    status = "placed",
+    order_details,
+  } = request.body;
 
   user_id = user_id || request.user.id;
 
-  Order.create({
-    name,
-    user_id,
-    address_id,
-    msisdn,
-    email,
-  })
-    .then((order) => {
-      if (!order) {
-        return Response.error(response, {
-          status: 500,
-          message: "Order not saved",
-        });
-      }
-      return Response.success(response, {
-        status: 201,
-        message: "Order created successfully",
-        data: order,
-      });
-    })
-    .catch((error) => {
-      return next(error);
+  const transaction = await sequelize.transaction();
+
+  try {
+    const order = await Order.create(
+      {
+        user_id,
+        restaurant_id,
+        address_id,
+        order_date: new Date(),
+        total_amount,
+        status,
+      },
+      { transaction }
+    );
+
+    const orderDetailRecords = order_details.map((detail) => {
+      return {
+        order_id: order.id,
+        menu_id: detail.menu_id,
+        quantity: detail.quantity,
+        price: detail.price,
+      };
     });
+
+    await OrderDetail.bulkCreate(orderDetailRecords, { transaction });
+
+    await transaction.commit();
+
+    return Response.success(response, {
+      status: 201,
+      message: "Order created successfully",
+      data: order,
+    });
+  } catch (error) {
+    await transaction.rollback();
+    return next(error);
+  }
 };

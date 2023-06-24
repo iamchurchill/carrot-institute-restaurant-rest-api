@@ -1,43 +1,42 @@
 const { body, param, query } = require("express-validator");
 
 module.exports.store = [
-  body("name")
-    .exists({ checkNull: true, checkFalsy: true })
-    .notEmpty()
-    .withMessage("Name is required")
-    .trim()
-    .escape()
-    .isString(),
   body("user_id")
     .optional({ nullable: true, checkFalsy: true })
     .trim()
     .escape()
     .isUUID(),
-  body("address_id")
-    .optional({ nullable: true, checkFalsy: true })
-    .trim()
-    .escape()
-    .isUUID(),
-  body("msisdn")
+  body("restaurant_id")
     .exists({ checkNull: true, checkFalsy: true })
     .notEmpty()
-    .withMessage("MSISDN is required")
+    .withMessage("Restaurant ID is required")
     .trim()
     .escape()
     .isString()
-    .matches(/^\+[1-9]\d{1,14}$/)
-    .withMessage(
-      "MSISDN must be in E.164 format (+[country code][number]), e.g. +233545923049"
-    ),
-  body("email")
+    .isUUID(),
+  body("address_id")
     .exists({ checkNull: true, checkFalsy: true })
-    .withMessage("Email is required")
-    .normalizeEmail({
-      all_lowercase: false,
-      gmail_remove_dots: false,
-      gmail_remove_subaddress: false,
-    })
-    .isEmail()
+    .notEmpty()
+    .withMessage("Address ID is required")
     .trim()
-    .escape(),
+    .escape()
+    .isString()
+    .isUUID(),
+  body("total_amount")
+    .exists({ checkNull: true, checkFalsy: true })
+    .notEmpty()
+    .withMessage("Total Amount is required")
+    .trim()
+    .escape()
+    .isFloat(),
+  body("order_details").isArray().withMessage("Order Details must be an array"),
+  body("order_details.*.menu_id")
+    .isInt({ gt: 0 })
+    .withMessage("Each Menu ID must be a positive integer"),
+  body("order_details.*.quantity")
+    .isInt({ gt: 0 })
+    .withMessage("Each Quantity must be a positive integer"),
+  body("order_details.*.price")
+    .isFloat({ gt: 0 })
+    .withMessage("Each Price must be a positive number"),
 ];
