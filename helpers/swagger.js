@@ -52,15 +52,6 @@ const swaggerJSDocOptions = {
         deprecated: false,
       },
       {
-        name: "USERS",
-        description: "",
-        externalDocs: {
-          description: "",
-          url: "",
-        },
-        deprecated: false,
-      },
-      {
         name: "RESTAURANTS",
         description: "",
         externalDocs: {

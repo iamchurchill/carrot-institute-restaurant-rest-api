@@ -6,14 +6,14 @@ const { PER_PAGE } = process.env;
 
 /**
  * @swagger
- * /api/v1/gender:
+ * /api/v1/restaurant:
  *   get:
  *     summary: List all restaurant
  *     description: This endpoint should be used to retrieve a list of restaurant with pagination and optional filtering.
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - RESTAURANT
+ *       - RESTAURANTS
  *     parameters:
  *       - in: query
  *         name: page
@@ -162,7 +162,7 @@ module.exports.index = (request, response, next) => {
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - GENDERS
+ *       - RESTAURANTS
  *     parameters:
  *       - in: path
  *         name: id
@@ -293,7 +293,7 @@ module.exports.show = (request, response, next) => {
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - GENDERS
+ *       - RESTAURANTS
  *     requestBody:
  *       required: true
  *       content:
@@ -303,7 +303,7 @@ module.exports.show = (request, response, next) => {
  *             properties:
  *               name:
  *                 type: string
- *                 description: Name of restaurant e.t.c Male or Female
+ *                 description: Name of restaurant
  *     responses:
  *       201:
  *         description: Created
