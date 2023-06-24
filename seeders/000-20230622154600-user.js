@@ -1,6 +1,5 @@
 "use strict";
 const { faker } = require("@faker-js/faker");
-
 const bcrypt = require("bcrypt");
 
 /** @type {import('sequelize-cli').Migration} */

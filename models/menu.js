@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "restaurant_id",
         as: "restaurant",
       });
+      this.hasMany(models.OrderDetail, {
+        foreignKey: "menu_id",
+        as: "order_detail",
+      });
     }
   }
   Menu.init(
