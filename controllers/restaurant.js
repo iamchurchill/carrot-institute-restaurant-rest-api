@@ -1,5 +1,5 @@
 const Response = require("@classes/response");
-const { Restaurant } = require("@models");
+const { Restaurant, Menu } = require("@models");
 const Pagination = require("@classes/pagination");
 const Util = require("@classes/util");
 const { PER_PAGE } = process.env;
@@ -402,7 +402,7 @@ module.exports.store = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: true
- *               message: Restaurant retrieved successfully
+ *               message: Menu retrieved successfully
  *               data:
  *       400:
  *         description: Bad Request
@@ -445,7 +445,7 @@ module.exports.store = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: false
- *               message: No restaurant available
+ *               message: No menu available
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -464,17 +464,21 @@ module.exports.store = (request, response, next) => {
 module.exports.restaurant_menu = (request, response, next) => {
   const { id } = request.params;
 
-  Restaurant.findByPk(id)
-    .then((restaurant) => {
-      if (!restaurant) {
+  Menu.findAll({
+    where: {
+      restaurant_id: id,
+    },
+  })
+    .then((menu) => {
+      if (!menu || menu.length === 0) {
         return Response.error(response, {
           status: 404,
-          message: "No restaurant available",
+          message: "No menu available",
         });
       }
       return Response.success(response, {
-        message: "Restaurant retrieved successfully",
-        data: restaurant,
+        message: "Menu retrieved successfully",
+        data: menu,
       });
     })
     .catch((error) => {
@@ -500,6 +504,13 @@ module.exports.restaurant_menu = (request, response, next) => {
  *           format: uuid
  *         required: true
  *         description: ID of the restaurant (UUID format)
+ *       - in: path
+ *         name: menu_id
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: Menu ID of the restaurant (UUID format)
  *     responses:
  *       200:
  *         description: OK
@@ -574,19 +585,24 @@ module.exports.restaurant_menu = (request, response, next) => {
  *               message: Internal Server Error
  */
 module.exports.restaurant_menu_by_id = (request, response, next) => {
-  const { id } = request.params;
+  const { id, menu_id } = request.params;
 
-  Restaurant.findByPk(id)
-    .then((restaurant) => {
-      if (!restaurant) {
+  Menu.findOne({
+    where: {
+      restaurant_id: id,
+      id: menu_id,
+    },
+  })
+    .then((menu) => {
+      if (!menu) {
         return Response.error(response, {
           status: 404,
-          message: "No restaurant available",
+          message: "No menu available",
         });
       }
       return Response.success(response, {
-        message: "Restaurant retrieved successfully",
-        data: restaurant,
+        message: "Menu retrieved successfully",
+        data: menu,
       });
     })
     .catch((error) => {
