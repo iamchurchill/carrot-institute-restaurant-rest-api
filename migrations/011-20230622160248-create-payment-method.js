@@ -2,40 +2,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("OrderDetails", {
+    await queryInterface.createTable("PaymentMethods", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("uuid_generate_v4()"),
         primaryKey: true,
         allowNull: false,
       },
-      order_id: {
+      user_id: {
         type: Sequelize.UUID,
         references: {
-          model: "Order",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      menu_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: "Menu",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+      type: {
+        type: Sequelize.ENUM(
+          "credit card",
+          "debit card",
+          "cash on delivery",
+          "digital wallet"
+        ),
       },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
-      },
-      price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
+      card_number: { type: Sequelize.STRING },
+      expiration_date: { type: Sequelize.DATE },
+      cvv: { type: Sequelize.STRING },
+      digital_wallet_name: { type: Sequelize.STRING },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -44,13 +38,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      deleted_at: {
-        type: Sequelize.DATE,
-        field: "deleted_at",
-      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("OrderDetails");
+    await queryInterface.dropTable("PaymentMethods");
   },
 };

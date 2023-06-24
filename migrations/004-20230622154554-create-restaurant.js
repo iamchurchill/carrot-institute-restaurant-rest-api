@@ -2,43 +2,43 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Deliveries", {
+    await queryInterface.createTable("Restaurants", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("uuid_generate_v4()"),
         primaryKey: true,
         allowNull: false,
       },
-      order_id: {
+      name: {
+        type: Sequelize.STRING,
+        unique: {
+          args: true,
+          msg: "Name must be unique",
+        },
+      },
+      user_id: {
         type: Sequelize.UUID,
         references: {
-          model: "Order",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      delivery_person_id: {
+      address_id: {
         type: Sequelize.UUID,
         references: {
-          model: "DeliveryPerson",
+          model: "Addresses",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      start_time: {
-        type: Sequelize.DATE,
+      msisdn: {
+        type: Sequelize.STRING(15),
       },
-      end_time: {
-        type: Sequelize.DATE,
-      },
-      status: {
-        type: Sequelize.ENUM("on the way", "nearby", "delivered"),
-        defaultValue: "on the way",
-      },
-      geo_point: {
-        type: Sequelize.GEOMETRY("POINT"),
+      email: {
+        type: Sequelize.STRING(50),
       },
       created_at: {
         allowNull: false,
@@ -55,6 +55,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Deliveries");
+    await queryInterface.dropTable("Restaurants");
   },
 };

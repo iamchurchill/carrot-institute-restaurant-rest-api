@@ -1,5 +1,4 @@
 "use strict";
-const { sequelize } = require("../models");
 const { faker } = require("@faker-js/faker");
 
 const bcrypt = require("bcrypt");
@@ -8,15 +7,19 @@ const bcrypt = require("bcrypt");
 module.exports = {
   async up(queryInterface, Sequelize) {
     const users = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 200; i++) {
       users.push({
         id: Sequelize.literal("uuid_generate_v4()"),
-        default_address_id: null,
-        first_name: faker.internet.userName(),
-        last_name: faker.internet.userName(),
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
         email: faker.internet.email(),
         password: bcrypt.hashSync("admin", 10),
         msisdn: faker.phone.number("23354#######"),
+        type: faker.helpers.arrayElement([
+          "customer",
+          "delivery_person",
+          "manager",
+        ]),
         registration_date: new Date(),
         last_login: new Date(),
         created_at: new Date(),

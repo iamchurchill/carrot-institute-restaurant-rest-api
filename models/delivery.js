@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "order_id",
         as: "order",
       });
-      this.belongsTo(models.DeliveryPerson, {
+      this.belongsTo(models.User, {
         foreignKey: "delivery_person_id",
         as: "delivery_person",
       });
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       order_id: {
         type: DataTypes.UUID,
         references: {
-          model: "Order",
+          model: "Orders",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       delivery_person_id: {
         type: DataTypes.UUID,
         references: {
-          model: "DeliveryPerson",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",

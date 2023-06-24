@@ -19,14 +19,14 @@ module.exports = (sequelize, DataTypes) => {
       restaurant_id: {
         type: DataTypes.UUID,
         references: {
-          model: "Restaurant",
+          model: "Restaurants",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
       name: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
       },
       description: {
         type: DataTypes.STRING,
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE,
       },
       image_url: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
       },
       available: {
         type: DataTypes.BOOLEAN,

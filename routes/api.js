@@ -7,7 +7,7 @@ const authController = require("@controllers/auth");
 
 //HEADERS MIDDLEWARE
 const { accept, token } = require("@middlewares/headers");
-const { verifyToken } = require("@middlewares/auth");
+const { verifyToken, verifyAccountType } = require("@middlewares/auth");
 
 //VALIDATOR HELPERS
 const { requestValidator } = require("@helpers/validator");
@@ -53,6 +53,7 @@ router
   .post(
     token,
     verifyToken,
+    verifyAccountType,
     requestValidator(restaurantValidations.store),
     restaurantController.store
   );

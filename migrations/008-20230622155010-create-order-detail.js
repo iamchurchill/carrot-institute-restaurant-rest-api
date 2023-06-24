@@ -2,43 +2,39 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Restaurants", {
+    await queryInterface.createTable("OrderDetails", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("uuid_generate_v4()"),
         primaryKey: true,
         allowNull: false,
       },
-      name: {
-        type: Sequelize.STRING,
-        unique: {
-          args: true,
-          msg: "Name must be unique",
-        },
-      },
-      user_id: {
+      order_id: {
         type: Sequelize.UUID,
         references: {
-          model: "Address",
+          model: "Orders",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      address_id: {
+      menu_id: {
         type: Sequelize.UUID,
         references: {
-          model: "Address",
+          model: "Menus",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      msisdn: {
-        type: Sequelize.STRING(15),
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
       },
-      email: {
-        type: Sequelize.STRING(50),
+      price: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
       },
       created_at: {
         allowNull: false,
@@ -55,6 +51,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Restaurants");
+    await queryInterface.dropTable("OrderDetails");
   },
 };

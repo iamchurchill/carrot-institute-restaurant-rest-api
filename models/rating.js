@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.UUID,
         references: {
-          model: "User",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       restaurant_id: {
         type: DataTypes.UUID,
         references: {
-          model: "Restaurant",
+          model: "Restaurants",
           key: "id",
         },
         onUpdate: "CASCADE",

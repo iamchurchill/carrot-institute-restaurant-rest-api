@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "restaurant_id",
         as: "restaurant",
       });
-      this.hasOne(models.DeliveryPerson, {
-        foreignKey: "delivery_person_id",
-        as: "delivery_person",
+      this.hasOne(models.Delivery, {
+        foreignKey: "order_id",
+        as: "delivery",
       });
     }
   }
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.UUID,
         references: {
-          model: "User",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -36,7 +36,16 @@ module.exports = (sequelize, DataTypes) => {
       restaurant_id: {
         type: DataTypes.UUID,
         references: {
-          model: "Restaurant",
+          model: "Restaurants",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      address_id: {
+        type: DataTypes.UUID,
+        references: {
+          model: "Addresses",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -47,15 +56,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       total_amount: {
         type: DataTypes.DECIMAL,
-      },
-      delivery_person_id: {
-        type: DataTypes.UUID,
-        references: {
-          model: "DeliveryPerson",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
       },
       status: {
         type: DataTypes.ENUM(

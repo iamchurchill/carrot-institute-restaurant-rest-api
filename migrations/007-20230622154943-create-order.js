@@ -2,55 +2,55 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Orders", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("uuid_generate_v4()"),
         primaryKey: true,
         allowNull: false,
       },
-      default_address_id: {
+      user_id: {
         type: Sequelize.UUID,
         references: {
-          model: "Address",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      first_name: {
-        type: Sequelize.STRING(50),
-      },
-      last_name: {
-        type: Sequelize.STRING(50),
-      },
-      email: {
-        type: Sequelize.STRING(50),
-        unique: {
-          args: true,
-          msg: "Email must be unique",
+      restaurant_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: "Restaurants",
+          key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
-      password: {
-        type: Sequelize.STRING(50),
-        defaultValue: null,
-      },
-      msisdn: {
-        type: Sequelize.STRING(15),
-        unique: {
-          args: true,
-          msg: "Msisdn must be unique",
+      address_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: "Addresses",
+          key: "id",
         },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
-      user_type: {
-        type: Sequelize.ENUM("customer", "delivery_person", "admin"),
-        defaultValue: "customer",
-      },
-      registration_date: {
+      order_date: {
         type: Sequelize.DATE,
       },
-      last_login: {
-        type: Sequelize.DATE,
+      total_amount: {
+        type: Sequelize.DECIMAL,
+      },
+      status: {
+        type: Sequelize.ENUM(
+          "placed",
+          "accepted",
+          "in preparation",
+          "in delivery",
+          "delivered"
+        ),
+        defaultValue: "placed",
       },
       created_at: {
         allowNull: false,
@@ -67,6 +67,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Orders");
   },
 };

@@ -4,7 +4,6 @@ const { Sequelize, Token } = require("@models");
 
 const { APP_URL, JWT_ISSUER, JWT_ACCESS_TOKEN_SECRET_KEY } = process.env;
 
-//Verify app token
 module.exports.verifyToken = (request, response, next) => {
   const access_token = request.token;
 
@@ -47,4 +46,15 @@ module.exports.verifyToken = (request, response, next) => {
     .catch((error) => {
       return next(error);
     });
+};
+
+module.exports.verifyAccountType = (request, response, next) => {
+  if (request.user && request.user.type === "manager") {
+    next();
+  } else {
+    return Response.error(response, {
+      status: 403,
+      message: "Forbidden: Only admins can perform this action.",
+    });
+  }
 };

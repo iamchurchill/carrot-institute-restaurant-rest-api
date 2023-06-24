@@ -20,19 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "payment_method",
       });
+      this.hasMany(models.Delivery, {
+        foreignKey: "delivery_person_id",
+        as: "deliveries",
+      });
     }
   }
   User.init(
     {
-      default_address_id: {
-        type: DataTypes.UUID,
-        references: {
-          model: "Address",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
       first_name: {
         type: DataTypes.STRING(50),
       },
@@ -47,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       password: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         defaultValue: null,
       },
       msisdn: {
@@ -57,8 +52,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Msisdn must be unique",
         },
       },
-      user_type: {
-        type: DataTypes.ENUM("customer", "delivery_person", "admin"),
+      type: {
+        type: DataTypes.ENUM("customer", "delivery_person", "manager"),
         defaultValue: "customer",
       },
       registration_date: {

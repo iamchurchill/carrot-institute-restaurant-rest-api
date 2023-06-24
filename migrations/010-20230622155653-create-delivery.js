@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("OrderPayments", {
+    await queryInterface.createTable("Deliveries", {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal("uuid_generate_v4()"),
@@ -12,34 +12,33 @@ module.exports = {
       order_id: {
         type: Sequelize.UUID,
         references: {
-          model: "Order",
+          model: "Orders",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      payment_method_id: {
+      delivery_person_id: {
         type: Sequelize.UUID,
         references: {
-          model: "PaymentMethod",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      amount: {
-        type: Sequelize.DOUBLE,
+      start_time: {
+        type: Sequelize.DATE,
       },
-      transaction_id: {
-        type: Sequelize.STRING,
+      end_time: {
+        type: Sequelize.DATE,
       },
       status: {
-        type: Sequelize.ENUM("pending", "completed", "failed"),
-        defaultValue: "pending",
+        type: Sequelize.ENUM("on the way", "nearby", "delivered"),
+        defaultValue: "on the way",
       },
-      date: {
-        type: Sequelize.DATE,
-        allowNull: false,
+      geo_point: {
+        type: Sequelize.GEOMETRY("POINT"),
       },
       created_at: {
         allowNull: false,
@@ -56,6 +55,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("OrderPayments");
+    await queryInterface.dropTable("Deliveries");
   },
 };
