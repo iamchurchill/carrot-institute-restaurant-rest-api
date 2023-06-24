@@ -51,7 +51,6 @@ const { PER_PAGE } = process.env;
  *                       format: float
  *                       example: 19.99
  *             required:
- *               - name
  *               - restaurant_id
  *               - address_id
  *               - total_amount
