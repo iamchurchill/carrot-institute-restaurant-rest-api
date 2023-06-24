@@ -54,3 +54,5 @@ router
     requestValidator(restaurantValidations.store),
     restaurantController.store
   );
+
+module.exports = router;

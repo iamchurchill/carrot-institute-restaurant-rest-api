@@ -24,7 +24,7 @@ const Response = require("@classes/response");
  *                   type: string
  *             example:
  *               status: true
- *               message: Welcome to circles
+ *               message: Welcome to Carrot Institute RESTFul API
  */
 module.exports.index = (request, response) => {
   return Response.success(response, {
