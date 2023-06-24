@@ -30,22 +30,6 @@ const { PER_PAGE } = process.env;
  *           maximum: 100
  *         required: false
  *         description: Number of results to return per page (10-100)
- *       - in: query
- *         name: users
- *         schema:
- *           type: string
- *           example: "false"
- *           default: "false"
- *         required: false
- *         description:
- *       - in: query
- *         name: circles
- *         schema:
- *           type: string
- *           example: "false"
- *           default: "false"
- *         required: false
- *         description:
  *     responses:
  *       200:
  *         description: OK
@@ -61,6 +45,20 @@ const { PER_PAGE } = process.env;
  *             example:
  *               status: true
  *               message: Restaurants retrieved successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Bad Request
  *       401:
  *         description: Unauthorized
  *         content:
@@ -105,30 +103,9 @@ const { PER_PAGE } = process.env;
  *               message:
  */
 module.exports.index = (request, response, next) => {
-  const {
-    page = 1,
-    per_page = PER_PAGE,
-    users = "false",
-    circles = "false",
-  } = request.query;
-
-  const includes = [];
-  if (users === "true") {
-    includes.push({
-      model: sequelize.models.User,
-      as: "users",
-    });
-  }
-
-  if (circles === "true") {
-    includes.push({
-      model: sequelize.models.Circle,
-      as: "circles",
-    });
-  }
+  const { page = 1, per_page = PER_PAGE } = request.query;
 
   const pagination = new Pagination(Restaurant, {
-    include: includes,
     page: page,
     perPage: per_page,
     baseUrl: Util.getUrl(),
@@ -171,22 +148,6 @@ module.exports.index = (request, response, next) => {
  *           format: uuid
  *         required: true
  *         description: ID of the restaurant (UUID format)
- *       - in: query
- *         name: users
- *         schema:
- *           type: string
- *           example: "false"
- *           default: "false"
- *         required: false
- *         description:
- *       - in: query
- *         name: circles
- *         schema:
- *           type: string
- *           example: "false"
- *           default: "false"
- *         required: false
- *         description:
  *     responses:
  *       200:
  *         description: OK
@@ -202,6 +163,20 @@ module.exports.index = (request, response, next) => {
  *             example:
  *               status: true
  *               message: Restaurant retrieved successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Bad Request
  *       401:
  *         description: Unauthorized
  *         content:
@@ -247,26 +222,8 @@ module.exports.index = (request, response, next) => {
  */
 module.exports.show = (request, response, next) => {
   const { id } = request.params;
-  const { users = "false", circles = "false" } = request.query;
 
-  const includes = [];
-  if (users === "true") {
-    includes.push({
-      model: sequelize.models.User,
-      as: "users",
-    });
-  }
-
-  if (circles === "true") {
-    includes.push({
-      model: sequelize.models.Circle,
-      as: "circles",
-    });
-  }
-
-  Restaurant.findByPk(id, {
-    include: includes,
-  })
+  Restaurant.findByPk(id)
     .then((restaurant) => {
       if (!restaurant) {
         return Response.error(response, {
@@ -319,6 +276,20 @@ module.exports.show = (request, response, next) => {
  *             example:
  *               status: true
  *               message: Restaurant created successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Bad Request
  *       401:
  *         description: Unauthorized
  *         content:
@@ -333,20 +304,6 @@ module.exports.show = (request, response, next) => {
  *             example:
  *               status: false
  *               message: Authorization header is missing
- *       400:
- *         description: Bad Request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: boolean
- *                 message:
- *                   type: string
- *             example:
- *               status: false
- *               message:
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -363,10 +320,14 @@ module.exports.show = (request, response, next) => {
  *               message: User not saved
  */
 module.exports.store = (request, response, next) => {
-  const { name } = request.body;
+  const { name, user_id, address_id, msisdn, email } = request.body;
 
   Restaurant.create({
     name,
+    user_id,
+    address_id,
+    msisdn,
+    email,
   })
     .then((restaurant) => {
       if (!restaurant) {

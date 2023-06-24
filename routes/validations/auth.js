@@ -7,10 +7,8 @@ module.exports.register = [
     .withMessage("Email is required")
     .normalizeEmail({ all_lowercase: false, gmail_remove_dots: false })
     .isEmail()
-    .withMessage("Email address required")
     .trim()
     .escape()
-    .isString()
     .custom(validateEmail),
   body("password")
     .exists({ checkNull: true, checkFalsy: true })
