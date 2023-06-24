@@ -15,8 +15,8 @@ const {
  * @swagger
  * /api/v1/register:
  *   post:
- *     summary:
- *     description:
+ *     summary: Register user
+ *     description: This endpoint should be used to register user from system.
  *     tags:
  *       - AUTH
  *     requestBody:
@@ -30,10 +30,12 @@ const {
  *                 type: string
  *                 default: "churchillmerediths@gmail.com"
  *                 example: "churchillmerediths@gmail.com"
+ *                 description:
  *               password:
  *                 type: string
  *                 default: "admin"
  *                 example: "admin"
+ *                 description:
  *     responses:
  *       200:
  *         description: OK
@@ -126,8 +128,8 @@ module.exports.register = (request, response, next) => {
  * @swagger
  * /api/v1/login:
  *   post:
- *     summary:
- *     description:
+ *     summary: Login user
+ *     description: This endpoint should be used to log in user from system.
  *     tags:
  *       - AUTH
  *     requestBody:
@@ -137,10 +139,16 @@ module.exports.register = (request, response, next) => {
  *           schema:
  *             type: object
  *             properties:
- *               msisdn:
+ *               email:
  *                 type: string
- *             example:
- *               msisdn: "+233545972039"
+ *                 default: "churchillmerediths@gmail.com"
+ *                 example: "churchillmerediths@gmail.com"
+ *                 description:
+ *               password:
+ *                 type: string
+ *                 default: "admin"
+ *                 example: "admin"
+ *                 description:
  *     responses:
  *       200:
  *         description: OK
@@ -153,9 +161,32 @@ module.exports.register = (request, response, next) => {
  *                   type: boolean
  *                 message:
  *                   type: string
+ *                 data:
+ *                   type: object
+ *                 access_token:
+ *                   type: string
+ *                 refresh_token:
+ *                   type: string
  *             example:
  *               status: true
- *               message: Verification code sent successfully
+ *               message: Logged in successfully
+ *               data:
+ *               access_token:
+ *               refresh_token:
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: User not found
  *       500:
  *         description: Internal Server Error
  *         content:

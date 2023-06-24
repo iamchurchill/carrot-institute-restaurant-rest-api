@@ -4,10 +4,10 @@ const { validateEmail } = require("@helpers/validator");
 module.exports.register = [
   body("email")
     .exists({ checkNull: true, checkFalsy: true })
-    .withMessage("email is required")
+    .withMessage("Email is required")
     .normalizeEmail({ all_lowercase: false, gmail_remove_dots: false })
     .isEmail()
-    .withMessage("email address required")
+    .withMessage("Email address required")
     .trim()
     .escape()
     .isString()
