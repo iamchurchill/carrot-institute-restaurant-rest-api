@@ -510,7 +510,7 @@ module.exports.restaurant_menu = (request, response, next) => {
  *           type: string
  *           format: uuid
  *         required: true
- *         description: Menu ID of the restaurant (UUID format)
+ *         description: ID of the menu (UUID format)
  *     responses:
  *       200:
  *         description: OK
@@ -525,7 +525,7 @@ module.exports.restaurant_menu = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: true
- *               message: Restaurant retrieved successfully
+ *               message: Menu retrieved successfully
  *               data:
  *       400:
  *         description: Bad Request
@@ -568,7 +568,7 @@ module.exports.restaurant_menu = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: false
- *               message: No restaurant available
+ *               message: No Menu available
  *       500:
  *         description: Internal Server Error
  *         content:
