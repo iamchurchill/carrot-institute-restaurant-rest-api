@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "order_id",
         as: "orders",
       });
-      this.hasOne(models.Address, {
-        foreignKey: "address_id",
-        as: "order_address",
-      });
       this.belongsTo(models.User, {
         foreignKey: "user_id",
         as: "manager",
@@ -30,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Restaurant.init(
     {
       user_id: {

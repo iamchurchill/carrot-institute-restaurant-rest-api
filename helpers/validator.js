@@ -31,54 +31,18 @@ module.exports.requestValidator = (validations) => {
   };
 };
 
-module.exports.validateRequestKeys = (allowedKeys) => {
-  return (value, { req }) => {
-    const keys = Object.keys(req.body);
-    const invalidKeys = keys.filter((key) => !allowedKeys.includes(key));
-    if (invalidKeys.length) {
-      throw new Error(`Invalid keys: ${invalidKeys.join(", ")}`);
-    }
-    return true;
-  };
-};
-
-module.exports.validateDateOfBirth = (value, { req }) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const dob = new Date(value);
-      const eighteenYearsAgo = new Date(
-        new Date().getFullYear() - 18,
-        new Date().getMonth(),
-        new Date().getDate()
-      );
-      if (dob > eighteenYearsAgo) {
-        reject(
-          new Error(
-            "You must be at least 18 years old as of " +
-              eighteenYearsAgo.toLocaleDateString()
-          )
-        );
-      } else {
-        resolve();
-      }
-    } catch (error) {
-      reject(new Error("Invalid date of birth"));
-    }
-  });
-};
-
-module.exports.validateMsisdn = (value) => {
+module.exports.validateEmail = (value) => {
   return User.findOne({
-    attributes: ["msisdn"],
+    attributes: ["email"],
     where: {
-      msisdn: {
+      email: {
         [Sequelize.Op.eq]: value,
       },
     },
   })
     .then((user) => {
       if (user) {
-        return Promise.reject("MSISDN is taken");
+        return Promise.reject("Email address is taken!");
       }
     })
     .catch((error) => {

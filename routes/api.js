@@ -1,6 +1,3 @@
-const path = require("path");
-const FileUploader = require("@classes/file-uploader");
-
 //CONTROLLERS
 const restaurantController = require("@controllers/restaurant");
 const authController = require("@controllers/auth");

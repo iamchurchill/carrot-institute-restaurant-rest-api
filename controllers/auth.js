@@ -26,10 +26,14 @@ const {
  *           schema:
  *             type: object
  *             properties:
- *               msisdn:
+ *               email:
  *                 type: string
- *             example:
- *               msisdn: "+233545972039"
+ *                 default: "churchillmerediths@gmail.com"
+ *                 example: "churchillmerediths@gmail.com"
+ *               password:
+ *                 type: string
+ *                 default: "admin"
+ *                 example: "admin"
  *     responses:
  *       200:
  *         description: OK
@@ -44,7 +48,21 @@ const {
  *                   type: string
  *             example:
  *               status: true
- *               message: Verification code sent successfully
+ *               message: Registered successfully
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: User already exists
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -58,7 +76,7 @@ const {
  *                   type: string
  *             example:
  *               status: false
- *               message: Verification code wasn't sent successfully
+ *               message: Internal Server Error
  */
 module.exports.register = (request, response, next) => {
   const { email, password } = request.body;
@@ -72,19 +90,24 @@ module.exports.register = (request, response, next) => {
   })
     .then((user) => {
       if (user) {
-        return response.status(400).json(errorResponse("User already exist"));
+        return Response.error(response, {
+          status: 400,
+          message: "User already exists",
+        });
       }
       return bcrypt
         .hash(password, 10)
-        .then((encryptedPassword) => {
+        .then((hashedPassword) => {
           return User.create({
             email: email.toLowerCase(),
-            password: encryptedPassword,
+            password: hashedPassword,
           })
             .then((user) => {
-              return response
-                .status(201)
-                .json(successResponse("Registered successfully", user));
+              return Response.success(response, {
+                status: 201,
+                message: "Registered successfully",
+                data: user,
+              });
             })
             .catch((error) => {
               return next(error);
@@ -160,29 +183,63 @@ module.exports.login = (request, response, next) => {
   })
     .then((user) => {
       if (!user) {
-        return response.status(400).json(errorResponse("User not found"));
+        return Response.error(response, {
+          status: 400,
+          message: "User not found",
+        });
       }
+
+      const payload = {
+        id: user.id,
+        email: user.email,
+        msisdn: user.msisdn,
+        type: user.type,
+      };
+
+      const options = {
+        algorithm: "HS256",
+        issuer: JWT_ISSUER,
+        audience: APP_URL,
+      };
+
+      const accessJwt = new JWT(JWT_ACCESS_TOKEN_SECRET_KEY, options);
+      const refreshJwt = new JWT(JWT_REFRESH_TOKEN_SECRET_KEY, options);
+
       return bcrypt
         .compare(password, user.password)
         .then((matches) => {
           if (!matches) {
-            return response
-              .status(400)
-              .json(errorResponse("Invalid Credentials"));
+            return Response.error(response, {
+              status: 400,
+              message: "Invalid Credentials",
+            });
           }
-          const accessToken = getToken(user, false);
-          const refreshToken = getToken(user);
 
-          return response
-            .status(200)
-            .json(
-              successResponse(
-                "Logged in successfully",
-                user,
-                accessToken,
-                refreshToken
-              )
-            );
+          Promise.all([
+            accessJwt.getToken(payload, {
+              expiresIn: JWT_ACCESS_TOKEN_EXPIRES,
+            }),
+            refreshJwt.getToken(payload, {
+              expiresIn: JWT_REFRESH_TOKEN_EXPIRES,
+            }),
+          ])
+            .then(([access_token, refresh_token]) => {
+              if (!access_token || !refresh_token) {
+                return Response.error(response, {
+                  status: 502,
+                  message: "Error creating token",
+                });
+              }
+              return Response.success(response, {
+                message: "Logged in successfully",
+                data: user,
+                access_token,
+                refresh_token,
+              });
+            })
+            .catch((error) => {
+              return next(error);
+            });
         })
         .catch((error) => {
           return next(error);
