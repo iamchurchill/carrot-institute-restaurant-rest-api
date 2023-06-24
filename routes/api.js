@@ -73,4 +73,13 @@ router
     restaurantController.restaurant_menu_by_id
   );
 
+//ORDER
+router
+  .route("/order")
+  .post(
+    token,
+    verifyToken,
+    requestValidator(orderValidations.store),
+    orderController.store
+  );
 module.exports = router;
