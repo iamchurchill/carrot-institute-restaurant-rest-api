@@ -86,7 +86,7 @@ const { PER_PAGE } = process.env;
  *                   type: string
  *             example:
  *               status: false
- *               message: No gender found
+ *               message: No restaurant found
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -100,7 +100,7 @@ const { PER_PAGE } = process.env;
  *                   type: string
  *             example:
  *               status: false
- *               message:
+ *               message: Internal Server Error
  */
 module.exports.index = (request, response, next) => {
   const { page = 1, per_page = PER_PAGE } = request.query;
@@ -218,7 +218,7 @@ module.exports.index = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: false
- *               message:
+ *               message: Internal Server Error
  */
 module.exports.show = (request, response, next) => {
   const { id } = request.params;
@@ -331,7 +331,7 @@ module.exports.show = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: false
- *               message: User not saved
+ *               message: Internal Server Error
  */
 module.exports.store = (request, response, next) => {
   let { name, user_id, address_id = null, msisdn, email } = request.body;
