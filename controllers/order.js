@@ -1,6 +1,5 @@
 const Response = require("@classes/response");
 const { sequelize, Order, OrderDetail } = require("@models");
-const { PER_PAGE } = process.env;
 
 /**
  * @swagger
