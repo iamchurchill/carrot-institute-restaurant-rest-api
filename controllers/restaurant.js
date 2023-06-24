@@ -45,6 +45,7 @@ const { PER_PAGE } = process.env;
  *             example:
  *               status: true
  *               message: Restaurants retrieved successfully
+ *               data:
  *       400:
  *         description: Bad Request
  *         content:
@@ -163,6 +164,7 @@ module.exports.index = (request, response, next) => {
  *             example:
  *               status: true
  *               message: Restaurant retrieved successfully
+ *               data:
  *       400:
  *         description: Bad Request
  *         content:
@@ -275,6 +277,10 @@ module.exports.show = (request, response, next) => {
  *               email:
  *                 type: string
  *                 description: Email of restaurant
+ *             required:
+ *               - name
+ *               - msisdn
+ *               - email
  *     responses:
  *       201:
  *         description: Created
@@ -290,6 +296,7 @@ module.exports.show = (request, response, next) => {
  *             example:
  *               status: true
  *               message: Restaurant created successfully
+ *               data:
  *       400:
  *         description: Bad Request
  *         content:
