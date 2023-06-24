@@ -5,7 +5,11 @@ module.exports.register = [
   body("email")
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage("Email is required")
-    .normalizeEmail({ all_lowercase: false, gmail_remove_dots: false })
+    .normalizeEmail({
+      all_lowercase: false,
+      gmail_remove_dots: false,
+      gmail_remove_subaddress: false,
+    })
     .isEmail()
     .trim()
     .escape()

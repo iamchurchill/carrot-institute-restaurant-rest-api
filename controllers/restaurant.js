@@ -1,5 +1,5 @@
 const Response = require("@classes/response");
-const { Sequelize, sequelize, Restaurant } = require("@models");
+const { Restaurant } = require("@models");
 const Pagination = require("@classes/pagination");
 const Util = require("@classes/util");
 const { PER_PAGE } = process.env;
@@ -261,6 +261,20 @@ module.exports.show = (request, response, next) => {
  *               name:
  *                 type: string
  *                 description: Name of restaurant
+ *               user_id:
+ *                 type: string
+ *                 format: uuid
+ *                 description: User ID of restaurant
+ *               address_id:
+ *                 type: string
+ *                 format: uuid
+ *                 description: Address ID of restaurant
+ *               msisdn:
+ *                 type: string
+ *                 description: MSISDN of restaurant
+ *               email:
+ *                 type: string
+ *                 description: Email of restaurant
  *     responses:
  *       201:
  *         description: Created
@@ -320,7 +334,9 @@ module.exports.show = (request, response, next) => {
  *               message: User not saved
  */
 module.exports.store = (request, response, next) => {
-  const { name, user_id, address_id, msisdn, email } = request.body;
+  let { name, user_id, address_id = null, msisdn, email } = request.body;
+
+  user_id = user_id || request.user.id;
 
   Restaurant.create({
     name,
