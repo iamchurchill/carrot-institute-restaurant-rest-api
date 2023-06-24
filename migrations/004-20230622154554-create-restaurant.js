@@ -9,13 +9,6 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      name: {
-        type: Sequelize.STRING,
-        unique: {
-          args: true,
-          msg: "Name must be unique",
-        },
-      },
       user_id: {
         type: Sequelize.UUID,
         references: {
@@ -33,6 +26,13 @@ module.exports = {
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
+      },
+      name: {
+        type: Sequelize.STRING,
+        unique: {
+          args: true,
+          msg: "Name must be unique",
+        },
       },
       msisdn: {
         type: Sequelize.STRING(15),

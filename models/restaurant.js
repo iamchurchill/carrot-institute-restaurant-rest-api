@@ -16,13 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Restaurant.init(
     {
-      name: {
-        type: DataTypes.STRING,
-        unique: {
-          args: true,
-          msg: "Name must be unique",
-        },
-      },
       user_id: {
         type: DataTypes.UUID,
         references: {
@@ -40,6 +33,13 @@ module.exports = (sequelize, DataTypes) => {
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
+      },
+      name: {
+        type: DataTypes.STRING,
+        unique: {
+          args: true,
+          msg: "Name must be unique",
+        },
       },
       msisdn: {
         type: DataTypes.STRING(15),
