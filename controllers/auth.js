@@ -36,6 +36,11 @@ const {
  *                 default: "admin"
  *                 example: "admin"
  *                 description:
+ *               password_confirm:
+ *                 type: string
+ *                 default: "admin"
+ *                 example: "admin"
+ *                 description:
  *     responses:
  *       200:
  *         description: OK
@@ -333,7 +338,7 @@ module.exports.login = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: false
- *               message: Logged out unsuccessful
+ *               message: Internal Server Error
  */
 module.exports.logout = (request, response, next) => {
   const token = request.token;
