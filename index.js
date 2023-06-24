@@ -11,7 +11,7 @@ const swaggerUiExpress = require("swagger-ui-express");
 const { swaggerSpec, swaggerUiExpressOptions } = require("@helpers/swagger");
 
 const webRouter = require("@routes/index");
-const apiRouter = require("@routes/api");
+//const apiRouter = require("@routes/api");
 
 const AppError = require("@classes/app-error");
 const ErrorHandler = require("@classes/error-handler");
@@ -73,7 +73,7 @@ app.set("json spaces", 5);
 app.set("view engine", "ejs");
 
 app.use(webRouter);
-app.use("/api/v1", apiRouter);
+//app.use("/api/v1", apiRouter);
 
 app.use(
   "/docs",

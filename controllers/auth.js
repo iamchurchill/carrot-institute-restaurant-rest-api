@@ -16,7 +16,7 @@ const {
  * /api/v1/register:
  *   post:
  *     summary: Register user
- *     description: This endpoint should be used to register user from system.
+ *     description: This endpoint should be used to register user
  *     tags:
  *       - AUTH
  *     requestBody:
@@ -129,7 +129,7 @@ module.exports.register = (request, response, next) => {
  * /api/v1/login:
  *   post:
  *     summary: Login user
- *     description: This endpoint should be used to log in user from system.
+ *     description: This endpoint should be used to log in users
  *     tags:
  *       - AUTH
  *     requestBody:
@@ -200,7 +200,7 @@ module.exports.register = (request, response, next) => {
  *                   type: string
  *             example:
  *               status: false
- *               message: Verification code wasn't sent successfully
+ *               message: Internal Server Error
  */
 module.exports.login = (request, response, next) => {
   const { email, password } = request.body;
@@ -257,7 +257,7 @@ module.exports.login = (request, response, next) => {
             .then(([access_token, refresh_token]) => {
               if (!access_token || !refresh_token) {
                 return Response.error(response, {
-                  status: 502,
+                  status: 500,
                   message: "Error creating token",
                 });
               }
@@ -286,7 +286,7 @@ module.exports.login = (request, response, next) => {
  * /api/v1/logout:
  *   post:
  *     summary: Logout user
- *     description: This endpoint should be used to log out user from system.
+ *     description: This endpoint should be used to log out users
  *     security:
  *       - bearerAuth: []
  *     tags:
@@ -306,7 +306,7 @@ module.exports.login = (request, response, next) => {
  *             example:
  *               status: true
  *               message: Logged out successfully
- *       401:
+ *       400:
  *         description: Bad Request
  *         content:
  *           application/json:
@@ -320,7 +320,7 @@ module.exports.login = (request, response, next) => {
  *             example:
  *               status: false
  *               message: Token is invalid
- *       502:
+ *       500:
  *         description: Internal Server Error
  *         content:
  *           application/json:
@@ -348,7 +348,7 @@ module.exports.logout = (request, response, next) => {
     .then((user) => {
       if (!user) {
         return Response.error(response, {
-          status: 401,
+          status: 400,
           message: "Token is invalid",
         });
       }
@@ -360,7 +360,7 @@ module.exports.logout = (request, response, next) => {
         .then((token) => {
           if (!token) {
             return Response.error(response, {
-              status: 502,
+              status: 500,
               message: "Logged out unsuccessful",
             });
           }

@@ -115,7 +115,6 @@ const swaggerJSDocOptions = {
 const swaggerSpec = swaggerJSDoc(swaggerJSDocOptions);
 
 const swaggerUiExpressOptions = {
-  customCss: ".swagger-ui .topbar { display: none }", // Hide the default title
   customSiteTitle: "Restaurant API - Carrot Institute", // Set your custom title here
   swaggerOptions: {
     defaultModelsExpandDepth: -1,
