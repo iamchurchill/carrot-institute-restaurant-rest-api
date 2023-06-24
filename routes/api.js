@@ -1,5 +1,6 @@
 //CONTROLLERS
 const restaurantController = require("@controllers/restaurant");
+const orderController = require("@controllers/order");
 const authController = require("@controllers/auth");
 
 //HEADERS MIDDLEWARE
@@ -11,6 +12,7 @@ const { requestValidator } = require("@helpers/validator");
 
 //VALIDATIONS
 const restaurantValidations = require("@validations/restaurant");
+const orderValidations = require("@validations/order");
 const authValidations = require("@validations/auth");
 
 //ROUTER
@@ -53,6 +55,22 @@ router
     verifyAccountType,
     requestValidator(restaurantValidations.store),
     restaurantController.store
+  );
+router
+  .route("/restaurant/:id/menu")
+  .get(
+    token,
+    verifyToken,
+    requestValidator(restaurantValidations.show),
+    restaurantController.show
+  );
+router
+  .route("/restaurant/:id/menu/")
+  .get(
+    token,
+    verifyToken,
+    requestValidator(restaurantValidations.show),
+    restaurantController.show
   );
 
 module.exports = router;

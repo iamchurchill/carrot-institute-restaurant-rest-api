@@ -24,10 +24,10 @@ const Response = require("@classes/response");
  *                   type: string
  *             example:
  *               status: true
- *               message: Welcome to Carrot Institute RESTFul API
+ *               message: Welcome to Carrot Institute Restaurant RESTFul API
  */
 module.exports.index = (request, response) => {
   return Response.success(response, {
-    message: "Welcome to Carrot Institute RESTFul API",
+    message: "Welcome to Carrot Institute Restaurant RESTFul API",
   });
 };

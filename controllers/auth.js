@@ -41,6 +41,10 @@ const {
  *                 default: "admin"
  *                 example: "admin"
  *                 description:
+ *             required:
+ *               - email
+ *               - password
+ *               - password_confirm
  *     responses:
  *       200:
  *         description: OK
@@ -154,6 +158,9 @@ module.exports.register = (request, response, next) => {
  *                 default: "admin"
  *                 example: "admin"
  *                 description:
+ *             required:
+ *               - email
+ *               - password
  *     responses:
  *       200:
  *         description: OK
