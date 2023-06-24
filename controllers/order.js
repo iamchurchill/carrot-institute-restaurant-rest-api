@@ -124,6 +124,7 @@ module.exports.store = async (request, response, next) => {
   } = request.body;
 
   user_id = user_id || request.user.id;
+  let order_date = new Date();
 
   const transaction = await sequelize.transaction();
 
@@ -133,7 +134,7 @@ module.exports.store = async (request, response, next) => {
         user_id,
         restaurant_id,
         address_id,
-        order_date: new Date(),
+        order_date,
         total_amount,
         status,
       },

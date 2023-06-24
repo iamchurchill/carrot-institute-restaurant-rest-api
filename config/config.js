@@ -14,7 +14,7 @@ module.exports = {
     seederStorage: "sequelize",
     seederStorageTableName: "SequelizeData",
     migrationStorageTableName: "SequelizeMeta",
-    logging: false,
+    logging: console.log,
     pool: {
       max: 10,
       min: 0,

@@ -31,7 +31,7 @@ module.exports.store = [
     .isFloat(),
   body("order_details").isArray().withMessage("Order Details must be an array"),
   body("order_details.*.menu_id")
-    .isInt({ gt: 0 })
+    .isUUID()
     .withMessage("Each Menu ID must be a positive integer"),
   body("order_details.*.quantity")
     .isInt({ gt: 0 })
