@@ -348,7 +348,7 @@ module.exports.store = (request, response, next) => {
     .then((restaurant) => {
       if (!restaurant) {
         return Response.error(response, {
-          status: 502,
+          status: 500,
           message: "Restaurant not saved",
         });
       }
