@@ -61,16 +61,16 @@ router
   .get(
     token,
     verifyToken,
-    requestValidator(restaurantValidations.show),
-    restaurantController.show
+    requestValidator(restaurantValidations.restaurant_menu),
+    restaurantController.restaurant_menu
   );
 router
-  .route("/restaurant/:id/menu/")
+  .route("/restaurant/:id/menu/:menu_id")
   .get(
     token,
     verifyToken,
-    requestValidator(restaurantValidations.show),
-    restaurantController.show
+    requestValidator(restaurantValidations.restaurant_menu_by_id),
+    restaurantController.restaurant_menu_by_id
   );
 
 module.exports = router;

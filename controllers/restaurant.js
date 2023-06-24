@@ -369,3 +369,227 @@ module.exports.store = (request, response, next) => {
       return next(error);
     });
 };
+
+/**
+ * @swagger
+ * /api/v1/restaurant/{id}/menu:
+ *   get:
+ *     summary: List restaurant menu by restaurant ID
+ *     description: This endpoint should be used to retrieve restaurant menu by its ID.
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - RESTAURANTS
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: ID of the restaurant (UUID format)
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: true
+ *               message: Restaurant retrieved successfully
+ *               data:
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Authorization header is missing
+ *       404:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: No restaurant available
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Internal Server Error
+ */
+module.exports.restaurant_menu = (request, response, next) => {
+  const { id } = request.params;
+
+  Restaurant.findByPk(id)
+    .then((restaurant) => {
+      if (!restaurant) {
+        return Response.error(response, {
+          status: 404,
+          message: "No restaurant available",
+        });
+      }
+      return Response.success(response, {
+        message: "Restaurant retrieved successfully",
+        data: restaurant,
+      });
+    })
+    .catch((error) => {
+      return next(error);
+    });
+};
+
+/**
+ * @swagger
+ * /api/v1/restaurant/{id}/menu/{menu_id}:
+ *   get:
+ *     summary: List restaurant by ID
+ *     description: This endpoint should be used to retrieve restaurant by its ID.
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - RESTAURANTS
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: ID of the restaurant (UUID format)
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: true
+ *               message: Restaurant retrieved successfully
+ *               data:
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Bad Request
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Authorization header is missing
+ *       404:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: No restaurant available
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: false
+ *               message: Internal Server Error
+ */
+module.exports.restaurant_menu_by_id = (request, response, next) => {
+  const { id } = request.params;
+
+  Restaurant.findByPk(id)
+    .then((restaurant) => {
+      if (!restaurant) {
+        return Response.error(response, {
+          status: 404,
+          message: "No restaurant available",
+        });
+      }
+      return Response.success(response, {
+        message: "Restaurant retrieved successfully",
+        data: restaurant,
+      });
+    })
+    .catch((error) => {
+      return next(error);
+    });
+};

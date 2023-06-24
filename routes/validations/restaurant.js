@@ -67,3 +67,33 @@ module.exports.store = [
     .trim()
     .escape(),
 ];
+
+module.exports.restaurant_menu = [
+  param("id")
+    .exists({ checkNull: true, checkFalsy: true })
+    .notEmpty()
+    .withMessage("ID is required")
+    .trim()
+    .escape()
+    .isUUID()
+    .withMessage("ID is not a UUID"),
+];
+
+module.exports.restaurant_menu_by_id = [
+  param("id")
+    .exists({ checkNull: true, checkFalsy: true })
+    .notEmpty()
+    .withMessage("ID is required")
+    .trim()
+    .escape()
+    .isUUID()
+    .withMessage("ID is not a UUID"),
+  param("menu_id")
+    .exists({ checkNull: true, checkFalsy: true })
+    .notEmpty()
+    .withMessage("ID is required")
+    .trim()
+    .escape()
+    .isUUID()
+    .withMessage("Menu ID is not a UUID"),
+];
